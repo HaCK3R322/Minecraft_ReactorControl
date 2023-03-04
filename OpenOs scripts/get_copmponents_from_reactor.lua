@@ -56,5 +56,12 @@ function reactorComponents:getBySlots(slots)
 	return components
 end
 
+function reactorComponents:getFromSlot(slot)
+	local item = ic.getStackInSlot(sides.up, slot)
+	if item ~= nil then
+		return createComponent(item.name, item.damage,item.maxDamage,slot)
+	end
+end
+
 return reactorComponents
 

@@ -52,6 +52,9 @@ for i=1,#reactorComponents do
 		}
 
 		fuelComponent.id = parse.parse(internet.request(urls.createFuelsSchemeComponent, fuelComponent))
+		fuelComponent.properties = reactorComponents[i]
+		fuelComponent.properties.id = componentId
+
 		fuelsSchemeComponents[fuel_i] = fuelComponent
 		fuel_i = fuel_i + 1
 
@@ -66,6 +69,9 @@ for i=1,#reactorComponents do
 		}
 
 		sinkerComponent.id = parse.parse(internet.request(urls.createHeatSinkersSchemeComponent, sinkerComponent))
+		sinkerComponent.properties = reactorComponents[i]
+		sinkerComponent.properties.id = componentId
+
 		heatSinkersSchemeComponents[sink_i] = sinkerComponent
 		sink_i = sink_i + 1
 
@@ -80,6 +86,9 @@ for i=1,#reactorComponents do
 		}
 
 		exchComponent.id = parse.parse(internet.request(urls.createHeatExchangersSchemeComponent, exchComponent))
+		exchComponent.properties = reactorComponents[i]
+		exchComponent.properties.id = componentId
+
 		heatExchangersSchemeComponents[exch_i] = exchComponent
 		exch_i = exch_i + 1
 

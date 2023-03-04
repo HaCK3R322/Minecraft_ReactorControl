@@ -18,4 +18,7 @@ urls.createFuelsSchemeComponent = host.."/createFuelsSchemeComponent"
 urls.createHeatExchangersSchemeComponent = host.."/createHeatExchangersSchemeComponent"
 urls.createHeatSinkersSchemeComponent = host.."/createHeatSinkersSchemeComponent"
 
+-- updating
+urls.updateComponentProperties = host.."/updateComponentProperties"
+
 return urls
