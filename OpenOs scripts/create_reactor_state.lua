@@ -19,7 +19,7 @@ reactorState.reactor = reactorState_body.reactor
 reactorState.maxOut = reactorState_body.maxOut
 reactorState.currentOut = reactorState_body.currentOut
 reactorState.coreHeat = reactorState_body.coreHeat
-reactorState.active = reactorState_body.active
+reactorState.active = reactorState_body.currentlyWorking
 
 print("CREATE_REACTOR_STATE [INFO]: Created Reactor state with id = "..tostring(reactorState.id))
 

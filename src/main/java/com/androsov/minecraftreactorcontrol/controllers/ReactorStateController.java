@@ -1,9 +1,12 @@
 package com.androsov.minecraftreactorcontrol.controllers;
 
 import com.androsov.minecraftreactorcontrol.entities.ReactorState;
+import com.androsov.minecraftreactorcontrol.entities.components.FuelsSchemeComponent;
 import com.androsov.minecraftreactorcontrol.entities.types.FuelType;
 import com.androsov.minecraftreactorcontrol.repositories.ReactorStateRepository;
+import com.androsov.minecraftreactorcontrol.repositories.components.FuelsSchemeComponentRepository;
 import com.androsov.minecraftreactorcontrol.services.ReactorStateService;
+import com.androsov.minecraftreactorcontrol.services.SchemesService;
 import com.androsov.minecraftreactorcontrol.services.TypesService;
 import lombok.AllArgsConstructor;
 import org.slf4j.LoggerFactory;
@@ -20,6 +23,7 @@ public class ReactorStateController {
 
     ReactorStateService reactorStateService;
     ReactorStateRepository reactorStateRepository;
+    SchemesService schemesService;
 
     @PostMapping(path = "/createReactorState",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -29,6 +33,8 @@ public class ReactorStateController {
         LOGGER.log(Level.INFO, reactorState.toString());
         return savedState.getId().toString();
     }
+
+
 
 
 }

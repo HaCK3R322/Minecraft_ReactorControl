@@ -3,19 +3,26 @@ local urls = require("reactor_control_urls")
 local parse = require("parse_response")
 
 local ids = {
-	[0] = "uranuimFuelTypeId, componentHeatExchangerTypeId, overclockedHeatSinkerTypeId, componentHeatSinkerTypeId",
-	uranuimFuelTypeId = nil,
+	uraniumFuelTypeId = nil,
+	nuclearFuelTypeId = nil,
 	componentHeatExchangerTypeId = nil,
 	overclockedHeatSinkerTypeId = nil,
 	componentHeatSinkerTypeId = nil
 }
 
 -- TYPES CREATION
-local uranuim_FuelType_body = {
+local uranium_FuelType_body = {
 	name = "Quadruple uranium rod",
 	timeToDeplet = 20000,
 	energyTick = 60,
 	heatTick = 96
+}
+
+local nuclear_FuelType_body = {
+	name = "Depleted uranium",
+	timeToDeplet = 0,
+	energyTick = 0,
+	heatTick = 0
 }
 
 local Component_HeatExchangerType_body = {
@@ -26,7 +33,7 @@ local Component_HeatExchangerType_body = {
 }
 
 local Overclocked_HeatSinkerType_body = {
-	name = "Overclocked heatsink",
+	name = "Overclocked heat sink",
 	heatCapacity = 1000,
 	closeExchangeTick = 0,
 	corpusExchangeTick = 36,
@@ -34,7 +41,7 @@ local Overclocked_HeatSinkerType_body = {
 }
 
 local Component_HeatSinkerType_body = {
-	name = "Component heatsink",
+	name = "Component heat sink",
 	heatCapacity = 0,
 	closeExchangeTick = 16,
 	corpusExchangeTick = 0,
@@ -43,8 +50,11 @@ local Component_HeatSinkerType_body = {
 
 print("INIT_TYPES [INFO]: started types initiation")
 
-ids.uranuimFuelTypeId = parse.parse(internet.request(urls.createFuelType, uranuim_FuelType_body))
-print("INIT_TYPES [INFO]: Created uranuim Fuel Type with id = "..tostring(ids.uranuimFuelTypeId))
+ids.uraniumFuelTypeId = parse.parse(internet.request(urls.createFuelType, uranium_FuelType_body))
+print("INIT_TYPES [INFO]: Created uranium Fuel Type with id = "..tostring(ids.uraniumFuelTypeId))
+
+ids.nuclearFuelTypeId = parse.parse(internet.request(urls.createFuelType, nuclear_FuelType_body))
+print("INIT_TYPES [INFO]: Created nuclear Fuel Type with id = "..tostring(ids.nuclearFuelTypeId))
 
 ids.componentHeatExchangerTypeId = parse.parse(internet.request(urls.createHeatExchangerType, Component_HeatExchangerType_body))
 print("INIT_TYPES [INFO]: Created Component Heat Exchanger Type with id = "..tostring(ids.componentHeatExchangerTypeId))
