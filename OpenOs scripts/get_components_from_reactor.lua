@@ -13,9 +13,7 @@ local function createComponent(_minecraftItemName, _damage, _maxDamage, _slot)
 	return componentProperties
 end
 
-local reactorComponents = {}
-
-function reactorComponents:getAll()
+local function getAll()
 	local components = {}
 
 	local j = 1
@@ -36,7 +34,7 @@ function reactorComponents:getAll()
 	return components
 end
 
-function reactorComponents:getBySlots(slots)
+local function getBySlots(slots)
 	local components = {}
 
 	local j = 1
@@ -56,12 +54,19 @@ function reactorComponents:getBySlots(slots)
 	return components
 end
 
-function reactorComponents:getFromSlot(slot)
+local function getFromSlot(slot)
 	local item = ic.getStackInSlot(sides.up, slot)
 	if item ~= nil then
 		return createComponent(item.name, item.damage,item.maxDamage,slot)
 	end
 end
+
+local reactorComponents = {
+	createComponent = createComponent,
+	getAll = getAll,
+	getBySlots = getBySlots,
+	getFromSlot = getFromSlot
+}
 
 return reactorComponents
 

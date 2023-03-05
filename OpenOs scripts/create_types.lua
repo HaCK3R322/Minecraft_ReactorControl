@@ -50,19 +50,19 @@ local Component_HeatSinkerType_body = {
 
 print("INIT_TYPES [INFO]: started types initiation")
 
-ids.uraniumFuelTypeId = parse.parse(internet.request(urls.createFuelType, uranium_FuelType_body))
+ids.uraniumFuelTypeId = parse.parseInt(internet.request(urls.createFuelType, uranium_FuelType_body))
 print("INIT_TYPES [INFO]: Created uranium Fuel Type with id = "..tostring(ids.uraniumFuelTypeId))
 
-ids.nuclearFuelTypeId = parse.parse(internet.request(urls.createFuelType, nuclear_FuelType_body))
+ids.nuclearFuelTypeId = parse.parseInt(internet.request(urls.createFuelType, nuclear_FuelType_body))
 print("INIT_TYPES [INFO]: Created nuclear Fuel Type with id = "..tostring(ids.nuclearFuelTypeId))
 
-ids.componentHeatExchangerTypeId = parse.parse(internet.request(urls.createHeatExchangerType, Component_HeatExchangerType_body))
+ids.componentHeatExchangerTypeId = parse.parseInt(internet.request(urls.createHeatExchangerType, Component_HeatExchangerType_body))
 print("INIT_TYPES [INFO]: Created Component Heat Exchanger Type with id = "..tostring(ids.componentHeatExchangerTypeId))
 
-ids.overclockedHeatSinkerTypeId = parse.parse(internet.request(urls.createHeatSinkerType, Overclocked_HeatSinkerType_body))
+ids.overclockedHeatSinkerTypeId = parse.parseInt(internet.request(urls.createHeatSinkerType, Overclocked_HeatSinkerType_body))
 print("INIT_TYPES [INFO]: Created Overclocked Heat Sinker Type with id = "..tostring(ids.overclockedHeatSinkerTypeId))
 
-ids.componentHeatSinkerTypeId = parse.parse(internet.request(urls.createHeatSinkerType, Component_HeatSinkerType_body))
+ids.componentHeatSinkerTypeId = parse.parseInt(internet.request(urls.createHeatSinkerType, Component_HeatSinkerType_body))
 print("INIT_TYPES [INFO]: Created Component Heat Sinker Type with id = "..tostring(ids.componentHeatSinkerTypeId))
 
 return ids

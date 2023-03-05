@@ -1,5 +1,6 @@
 package com.androsov.minecraftreactorcontrol.controllers;
 
+import com.androsov.minecraftreactorcontrol.entities.ComponentProperties;
 import com.androsov.minecraftreactorcontrol.entities.ReactorState;
 import com.androsov.minecraftreactorcontrol.entities.components.FuelsSchemeComponent;
 import com.androsov.minecraftreactorcontrol.entities.types.FuelType;
@@ -34,7 +35,14 @@ public class ReactorStateController {
         return savedState.getId().toString();
     }
 
+    @PostMapping(path = "/updateComponentProperties",
+        consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @ResponseBody
+    public String updateFuelsSchemeComponent(@ModelAttribute ComponentProperties properties) {
+        LOGGER.log(Level.INFO, "updated " + properties.getId());
 
+        return "got it!";
+    }
 
 
 }

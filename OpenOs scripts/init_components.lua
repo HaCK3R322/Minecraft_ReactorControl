@@ -5,7 +5,7 @@ local parse = require("parse_response")
 local reactorState = require("create_reactor_state")
 
 local reactorComponentsLib = require("get_components_from_reactor")
-local reactorComponents = reactorComponentsLib:getAll()
+local reactorComponents = reactorComponentsLib.getAll()
 local reactorTypesIds = require("create_types")
 
 local QUFR_NAME = "ic2:quad_uranium_fuel_rod"
@@ -40,7 +40,7 @@ local fuel_i = 1
 local exch_i = 1
 local sink_i = 1
 for i=1,#reactorComponents do
-	local componentId = parse.parse(internet.request(urls.createComponentProperties, reactorComponents[i]))
+	local componentId = parse.parseInt(internet.request(urls.createComponentProperties, reactorComponents[i]))
 	local name = reactorComponents[i].minecraftItemName
 
 	-- FUEL COMPONENT
@@ -51,7 +51,7 @@ for i=1,#reactorComponents do
 			fuelType = getTypeIdComponentTypeByName(name)
 		}
 
-		fuelComponent.id = parse.parse(internet.request(urls.createFuelsSchemeComponent, fuelComponent))
+		fuelComponent.id = parse.parseInt(internet.request(urls.createFuelsSchemeComponent, fuelComponent))
 		fuelComponent.properties = reactorComponents[i]
 		fuelComponent.properties.id = componentId
 
@@ -68,7 +68,7 @@ for i=1,#reactorComponents do
 			heatSinkerType = getTypeIdComponentTypeByName(name)
 		}
 
-		sinkerComponent.id = parse.parse(internet.request(urls.createHeatSinkersSchemeComponent, sinkerComponent))
+		sinkerComponent.id = parse.parseInt(internet.request(urls.createHeatSinkersSchemeComponent, sinkerComponent))
 		sinkerComponent.properties = reactorComponents[i]
 		sinkerComponent.properties.id = componentId
 
@@ -85,7 +85,7 @@ for i=1,#reactorComponents do
 			heatExchangerType = getTypeIdComponentTypeByName(name)
 		}
 
-		exchComponent.id = parse.parse(internet.request(urls.createHeatExchangersSchemeComponent, exchComponent))
+		exchComponent.id = parse.parseInt(internet.request(urls.createHeatExchangersSchemeComponent, exchComponent))
 		exchComponent.properties = reactorComponents[i]
 		exchComponent.properties.id = componentId
 

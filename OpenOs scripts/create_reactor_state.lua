@@ -14,7 +14,7 @@ local reactorState_body = {
 	currentlyWorking = false
 }
 
-reactorState.id = parse.parse(internet.request(urls.createReactorState, reactorState_body))
+reactorState.id = parse.parseInt(internet.request(urls.createReactorState, reactorState_body))
 reactorState.reactor = reactorState_body.reactor
 reactorState.maxOut = reactorState_body.maxOut
 reactorState.currentOut = reactorState_body.currentOut
