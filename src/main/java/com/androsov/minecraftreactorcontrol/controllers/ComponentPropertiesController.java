@@ -18,9 +18,19 @@ public class ComponentPropertiesController {
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public String createHeatExchangerType(@ModelAttribute ComponentProperties type) {
-        ComponentProperties savedType = componentPropertiesRepository.save(type);
+    public String createComponentProperties(@ModelAttribute ComponentProperties properties) {
+        ComponentProperties saved = componentPropertiesRepository.save(properties);
 
-        return savedType.getId().toString();
+        return saved.getId().toString();
+    }
+
+    @PostMapping(path = "/updateComponentProperties",
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseBody
+    public String updateComponentProperties(@ModelAttribute ComponentProperties properties) {
+        ComponentProperties saved = componentPropertiesRepository.save(properties);
+
+        return saved.getId().toString();
     }
 }

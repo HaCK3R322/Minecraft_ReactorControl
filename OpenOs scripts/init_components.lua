@@ -8,13 +8,13 @@ local reactorComponentsLib = require("get_components_from_reactor")
 local reactorComponents = reactorComponentsLib.getAll()
 local reactorTypesIds = require("create_types")
 
-local QUFR_NAME = "ic2:quad_uranium_fuel_rod"
-local N_NAME = "ic2:nuclear"
-local CHS_NAME = "ic2:component_heat_vent"
-local OHS_NAME = "ic2:overclocked_heat_vent"
-local CHE_NAME = "ic2:component_heat_exchanger"
+local function getTypeIdComponentTypeByName(name)
+	local QUFR_NAME = "ic2:quad_uranium_fuel_rod"
+	local N_NAME = "ic2:nuclear"
+	local CHS_NAME = "ic2:component_heat_vent"
+	local OHS_NAME = "ic2:overclocked_heat_vent"
+	local CHE_NAME = "ic2:component_heat_exchanger"
 
-function getTypeIdComponentTypeByName(name)
 	if name == QUFR_NAME then
 		return reactorTypesIds.uraniumFuelTypeId
 	elseif name == CHS_NAME then
@@ -36,61 +36,61 @@ local fuelsSchemeComponents = {}
 local heatSinkersSchemeComponents = {}
 local heatExchangersSchemeComponents = {}
 
-local fuel_i = 1
-local exch_i = 1
-local sink_i = 1
-for i=1,#reactorComponents do
-	local componentId = parse.parseInt(internet.request(urls.createComponentProperties, reactorComponents[i]))
-	local name = reactorComponents[i].minecraftItemName
+-- if
+-- im
+-- here
+-- then
+-- by now all good
+
+for i=1,#reactorComponents do -- ПЕРЕНЕСТИ INIT COMPONENT В ОТДЕЛЬНУЮ ФУНКЦИЮ
+	local componentProperties = reactorComponents[i]
+	componentProperties.id = parse.parseInt(internet.request(urls.createComponentProperties, reactorComponents[i]))
+
+	local name = componentProperties.minecraftItemName
+	local componentTypeId = getTypeIdComponentTypeByName(name)
 
 	-- FUEL COMPONENT
-	if name == QUFR_NAME or name == N_NAME then
+	if componentTypeId == reactorTypesIds.uraniumFuelTypeId or componentTypeId == reactorTypesIds.nuclearFuelTypeId then
 		local fuelComponent = {
 			reactorState = reactorState.id,
-			componentProperties = componentId,
+			componentProperties = componentProperties.id,
 			fuelType = getTypeIdComponentTypeByName(name)
 		}
 
 		fuelComponent.id = parse.parseInt(internet.request(urls.createFuelsSchemeComponent, fuelComponent))
 		fuelComponent.properties = reactorComponents[i]
-		fuelComponent.properties.id = componentId
 
-		fuelsSchemeComponents[fuel_i] = fuelComponent
-		fuel_i = fuel_i + 1
+		table.insert(fuelsSchemeComponents, fuelComponent)
 
 		print("INIT_COMPONENTS [INFO]: inited fuel component \""..name.."\"")
 
 	-- HEAT SINKER COMPONENT
-	elseif name == CHS_NAME or name == OHS_NAME then
+	elseif componentTypeId == reactorTypesIds.componentHeatSinkerTypeId or componentTypeId == reactorTypesIds.overclockedHeatSinkerTypeId then
 		local sinkerComponent = {
 			reactorState = reactorState.id,
-			componentProperties = componentId,
+			componentProperties = componentProperties.id,
 			heatSinkerType = getTypeIdComponentTypeByName(name)
 		}
 
 		sinkerComponent.id = parse.parseInt(internet.request(urls.createHeatSinkersSchemeComponent, sinkerComponent))
 		sinkerComponent.properties = reactorComponents[i]
-		sinkerComponent.properties.id = componentId
 
-		heatSinkersSchemeComponents[sink_i] = sinkerComponent
-		sink_i = sink_i + 1
+		table.insert(heatSinkersSchemeComponents, sinkerComponent)
 
 		print("INIT_COMPONENTS [INFO]: inited heatSink component \""..name.."\"")
 
 	-- HEAT EXCHANGER COMPONENT
-	elseif name == CHE_NAME then -- EXCHANGERS
+	elseif componentTypeId == reactorTypesIds.componentHeatExchangerTypeId then
 		local exchComponent = {
 			reactorState = reactorState.id,
-			componentProperties = componentId,
+			componentProperties = componentProperties.id,
 			heatExchangerType = getTypeIdComponentTypeByName(name)
 		}
 
 		exchComponent.id = parse.parseInt(internet.request(urls.createHeatExchangersSchemeComponent, exchComponent))
 		exchComponent.properties = reactorComponents[i]
-		exchComponent.properties.id = componentId
 
-		heatExchangersSchemeComponents[exch_i] = exchComponent
-		exch_i = exch_i + 1
+		table.insert(heatExchangersSchemeComponents, exchComponent)
 
 		print("INIT_COMPONENTS [INFO]: inited heatExch component \""..name.."\"")
 	else
@@ -101,5 +101,7 @@ end
 schemesComponents.fuelsSchemeComponents = fuelsSchemeComponents
 schemesComponents.heatSinkersSchemeComponents = heatSinkersSchemeComponents
 schemesComponents.heatExchangersSchemeComponents = heatExchangersSchemeComponents
+schemesComponents.typesIds = reactorTypesIds
+schemesComponents.reactorState = reactorState
 
 return schemesComponents

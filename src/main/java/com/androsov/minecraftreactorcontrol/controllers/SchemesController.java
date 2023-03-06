@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @AllArgsConstructor
 public class SchemesController {
@@ -47,6 +49,25 @@ public class SchemesController {
         HeatSinkersSchemeComponent savedType = heatSinkersSchemeComponentRepository.save(component);
 
         return savedType.getId().toString();
+    }
+
+    /**
+     * Gets fuels scheme id and removes it from DB
+     * @param id - id in fuels scheme
+     * @return ignored
+     */
+    @PostMapping(path = "/deleteFuelSchemeComponent",
+        consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @ResponseBody String deleteFuelSchemeComponent(@RequestParam("id") Integer id) {
+        Optional<FuelsSchemeComponent> componentOptional = fuelsSchemeComponentRepository.findById(id);
+
+        if(componentOptional.isPresent()) {
+            FuelsSchemeComponent component = componentOptional.get();
+            component.setReactorState(null);
+            fuelsSchemeComponentRepository.save(component);
+        }
+
+        return "Ignore me pls";
     }
 }
 

@@ -24,7 +24,6 @@ public class ReactorStateController {
 
     ReactorStateService reactorStateService;
     ReactorStateRepository reactorStateRepository;
-    SchemesService schemesService;
 
     @PostMapping(path = "/createReactorState",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -34,15 +33,4 @@ public class ReactorStateController {
         LOGGER.log(Level.INFO, reactorState.toString());
         return savedState.getId().toString();
     }
-
-    @PostMapping(path = "/updateComponentProperties",
-        consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    @ResponseBody
-    public String updateFuelsSchemeComponent(@ModelAttribute ComponentProperties properties) {
-        LOGGER.log(Level.INFO, "updated " + properties.getId());
-
-        return "got it!";
-    }
-
-
 }

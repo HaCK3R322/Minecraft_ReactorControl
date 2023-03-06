@@ -1,25 +1,25 @@
 package com.androsov.minecraftreactorcontrol.entities;
 
-import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
+
+import javax.persistence.*;
 
 @Entity
-@Table(name = "Reactor")
+@Table(name = "Robot")
 @AllArgsConstructor
-@ToString
-public class Reactor {
+public class Robot {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Getter
-    @Setter
+    @Getter @Setter
     Integer id;
-    @Getter @Setter String reactorPos;
 
-    @Getter @Setter Boolean needReplacing;
+    @Getter @Setter
+    String name;
 
+    @Getter @Setter
+    Boolean currentlyBusy;
 
-    protected Reactor() {}
+    public Robot() {}
 }

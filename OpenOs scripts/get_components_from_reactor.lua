@@ -4,6 +4,7 @@ local sides = require("sides")
 
 local function createComponent(_minecraftItemName, _damage, _maxDamage, _slot)
 	local componentProperties = {
+		id = nil,
 		minecraftItemName = _minecraftItemName,
 		damage = _damage,
 		maxDamage = _maxDamage,
