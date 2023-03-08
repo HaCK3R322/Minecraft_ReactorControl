@@ -63,6 +63,7 @@ local function deleteDepletedFromDB(depletedComponents)
         local postBody = "id="..depletedComponent.id
 
         internet.request(urls.deleteFuelSchemeComponent, postBody)
+        os.sleep(0) -- need to fix "too many open connections" error
 
         print("WATCH_FUEL [INFO]: depleted fuel component id = "..tostring(depletedComponent.id).." removed from db")
     end
@@ -116,6 +117,15 @@ while(true) do
             table.insert(fuelsSchemeComponents, fuelComponent)
 
             print("WATCH_FUEL.INIT_COMPONENTS [INFO]: inited fuel component \""..fuelComponent.properties.minecraftItemName.."\"")
+        end
+
+        -- delete depleted from watching
+        for i, fuelsSchemeComponent in ipairs(fuelsSchemeComponents) do
+            for j, depletedComponent in ipairs(depletedComponents) do
+                if fuelsSchemeComponent.id == depletedComponent.id then
+                    table.remove(fuelsSchemeComponents, i)
+                end
+            end
         end
 
         depletedComponents = {}

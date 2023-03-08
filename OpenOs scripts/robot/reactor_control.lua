@@ -12,33 +12,31 @@ local ic = component.inventory_controller
 
 
 
-function take_new_uranium() -- add check number of uranium
+function take_new_uranium(howMuch) -- add check number of uranium
   print("REACTOR_CONTROL [INFO]: taking uranium started")
-  robot.move_path(pathes.to_uranium_rod_plant)
-  
-  local uranium = ic.getStackInSlot(sides.front, 1)
-  if uranium ~= nil then
-    ic.suckFromSlot(sides.front, 1)
-  else
-    print("REACTOR_CONTROL [ERROR]: no uranium found to take")
-    return false
+
+  while(true) do
+    local uranium = ic.getStackInSlot(sides.front, 1)
+
+    if uranium ~= nil and uranium.size >= howMuch then
+      ic.suckFromSlot(sides.front, 1, howMuch)
+      break
+    else
+      print("REACTOR_CONTROL [EXCEPTION]: not enough uranium (required: "..tostring(howMuch)..")")
+      os.sleep(30)
+    end
   end
-  
-  robot.move_path(pathes.from_uranium_rod_plant)
 
   return true
 end
 
 function drop_all()
   print("CHECK_REACTOR.DROP_ALL [INFO]: dropping started")
-  robot.move_path(pathes.to_uranium_rod_plant)
   
   ic.dropIntoSlot(sides.front, 1, 64) -- left uranium
   robot.select(2)
   ic.dropIntoSlot(sides.front, 2, 64) -- collected moh
   robot.select(1)
-  
-  robot.move_path(pathes.from_uranium_rod_plant)
   
   print("CHECK_REACTOR.DROP_ALL [INFO]: end")
   return true
@@ -149,6 +147,7 @@ local function indicateThatServingDone(reactorPos)
   postBody = postBody.."&robot="..tostring(thisRobot.id)
 
   internet.request(urls.reactorServed, postBody)
+  os.sleep(0) -- need to fix
   print("REACTOR_CONTROL [INFO]: indicated that reactor served")
 end
 
@@ -163,7 +162,9 @@ function main()
     local slots = getSlotsToReplace(reactorPosToServe)
     local paths = getReactorPaths(reactorPosToServe)
 
-    take_new_uranium()
+    robot.move_path(pathes.to_uranium_rod_plant)
+    take_new_uranium(#slots)
+    robot.move_path(pathes.from_uranium_rod_plant)
 
     robot.move_path(pathes.to_reactors_enter_lever)
     robot.useDown()
