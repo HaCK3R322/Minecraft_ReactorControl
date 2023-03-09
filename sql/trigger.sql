@@ -1,1 +1,0 @@
-IF NOT NEW.reactor_state_currently_working THEN
