@@ -8,7 +8,8 @@ import lombok.ToString;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Component_properties")
+@Table(name = "Component_properties", indexes = {@Index(columnList = "id",
+        name = "id_index")})
 @AllArgsConstructor
 @ToString
 public class ComponentProperties {

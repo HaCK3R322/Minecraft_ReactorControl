@@ -25,7 +25,7 @@ public class FuelsSchemeComponent {
     ReactorState reactorState;
     @OneToOne
     @JoinColumn(name = "component_properties_id")
-    ComponentProperties componentProperties;
+    @Getter @Setter ComponentProperties componentProperties;
     @Getter @Setter
     @ManyToOne
     @JoinColumn(name = "fuel_type_id")

@@ -62,8 +62,7 @@ local function deleteDepletedFromDB(depletedComponents)
     for index, depletedComponent in ipairs(depletedComponents) do
         local postBody = "id="..depletedComponent.id
 
-        internet.request(urls.deleteFuelSchemeComponent, postBody)
-        os.sleep(0) -- need to fix "too many open connections" error
+        internet.request(urls.deleteFuelSchemeComponent, postBody)()
 
         print("WATCH_FUEL [INFO]: depleted fuel component id = "..tostring(depletedComponent.id).." removed from db")
     end

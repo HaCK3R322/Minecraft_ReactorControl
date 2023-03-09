@@ -16,6 +16,8 @@ public class Reactor {
     @Getter
     @Setter
     Integer id;
+
+    @Column(unique = true)
     @Getter @Setter String reactorPos;
 
     @Getter @Setter Boolean needReplacing;

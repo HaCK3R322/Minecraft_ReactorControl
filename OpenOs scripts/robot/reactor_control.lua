@@ -82,7 +82,7 @@ local function getReactorPosToServe()
 
   print("REACTOR_CONTROL [INFO]: waiting for task...")
 
-  local reactorPosToServe = "no"
+  local reactorPosToServe = parse.parseStr(internet.request(urls.isThereAJob,postBody))
   while(reactorPosToServe == "no") do
     os.sleep(15)
     reactorPosToServe = parse.parseStr(internet.request(urls.isThereAJob,postBody))
@@ -146,8 +146,7 @@ local function indicateThatServingDone(reactorPos)
   postBody = postBody.."reactorPos="..reactorPos
   postBody = postBody.."&robot="..tostring(thisRobot.id)
 
-  internet.request(urls.reactorServed, postBody)
-  os.sleep(0) -- need to fix
+  internet.request(urls.reactorServed, postBody)()
   print("REACTOR_CONTROL [INFO]: indicated that reactor served")
 end
 
@@ -162,27 +161,32 @@ function main()
     local slots = getSlotsToReplace(reactorPosToServe)
     local paths = getReactorPaths(reactorPosToServe)
 
-    robot.move_path(pathes.to_uranium_rod_plant)
-    take_new_uranium(#slots)
-    robot.move_path(pathes.from_uranium_rod_plant)
+    local controlSum = 0
 
-    robot.move_path(pathes.to_reactors_enter_lever)
-    robot.useDown()
+    if robot.move_path(pathes.to_uranium_rod_plant) then controlSum = controlSum + 1 end
+    if take_new_uranium(#slots) then controlSum = controlSum + 1 end
+    if robot.move_path(pathes.from_uranium_rod_plant) then controlSum = controlSum + 1 end
 
-    robot.move_path(paths.to_reactor)
-    replace_depleted(slots)
-    robot.move_path(paths.from_reactor)
+    if robot.move_path(pathes.to_reactors_enter_lever) then controlSum = controlSum + 1 end
+    if robot.useDown() then controlSum = controlSum + 1 end
 
-    robot.useDown()
-    robot.move_path(pathes.from_reactors_enter_lever)
+    if robot.move_path(paths.to_reactor) then controlSum = controlSum + 1 end
+    if replace_depleted(slots) then controlSum = controlSum + 1 end
+    if robot.move_path(paths.from_reactor) then controlSum = controlSum + 1 end
 
-    robot.move_path(pathes.to_uranium_rod_plant)
-    drop_all()
-    robot.move_path(pathes.from_uranium_rod_plant)
+    if robot.useDown() then controlSum = controlSum + 1 end
+    if robot.move_path(pathes.from_reactors_enter_lever) then controlSum = controlSum + 1 end
 
-    print("REACTOR_CONTROL [INFO]: serving done")
+    if robot.move_path(pathes.to_uranium_rod_plant) then controlSum = controlSum + 1 end
+    if drop_all() then controlSum = controlSum + 1 end
+    if robot.move_path(pathes.from_uranium_rod_plant) then controlSum = controlSum + 1 end
 
-    indicateThatServingDone(reactorPosToServe)
+    if controlSum == 13 then
+      print("REACTOR_CONTROL [INFO]: serving done")
+      indicateThatServingDone(reactorPosToServe)
+    else
+      print("REACTOR_CONTROL [ERROR]: smthng goes wrong babe")
+    end
   end
 end
 
